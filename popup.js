@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   newNoteBtn.addEventListener("click", async () => {
+    resetForm(); // Clear the form first.
     noteForm.style.display = "block";
     savedNotesDiv.style.display = "none";
     currentNoteId = null; // Reset for new note
@@ -34,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
       currentWindow: true,
     });
     urlInput.value = tab.url; // Auto-fill the URL field from the current tab
-    resetForm();
   });
 
   viewNotesBtn.addEventListener("click", () => {
@@ -122,10 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const noteDiv = document.createElement("div");
         noteDiv.className = `note-card ${note.color}`;
         noteDiv.innerHTML = `
-              <strong>${note.title}</strong><br>
-              <small>${note.url}</small><br>
-              <p>${note.content}</p>
-            `;
+                <strong>${note.title}</strong><br>
+                <small>${note.url}</small><br>
+                <p>${note.content}</p>
+              `;
         // Set up click event to open the note for editing/viewing.
         noteDiv.addEventListener("click", () => {
           currentNoteId = note.id;
