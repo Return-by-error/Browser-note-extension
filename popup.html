@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Note Taker</title>
+    <link rel="stylesheet" href="popup.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h2>Note Taker</h2>
+
+    <button id="new-note-btn">New Note</button>
+    <button id="view-notes-btn">My Notes</button>
+
+    <div id="note-form" style="display: none">
+      <input type="text" id="note-title" placeholder="Note Title" />
+      <input type="text" id="note-url" placeholder="URL" />
+      <textarea
+        id="note-content"
+        placeholder="Write your note here..."
+      ></textarea>
+
+      <div class="color-picker">
+        <div
+          class="color-option color-yellow selected"
+          data-color="note-yellow"
+        ></div>
+        <div class="color-option color-pink" data-color="note-pink"></div>
+        <div class="color-option color-green" data-color="note-green"></div>
+        <div class="color-option color-blue" data-color="note-blue"></div>
+        <div class="color-option color-purple" data-color="note-purple"></div>
+      </div>
+
+      <button id="save-note-btn">Save Note</button>
+      <button id="cancel-note-btn">Cancel</button>
+      <!-- New delete note button: initially hidden -->
+      <button id="delete-note-btn" style="display: none">Delete Note</button>
+      <p id="save-message" style="color: green; display: none">
+        Message saved!
+      </p>
+    </div>
+
+    <div id="saved-notes" style="display: none"></div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

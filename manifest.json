@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Integrated Note Taker",
+  "version": "1.0",
+  "description": "Take notes that stay linked to the page you took them on.",
+  "permissions": ["tabs", "storage"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "host_permissions": ["<all_urls>"]
+}
