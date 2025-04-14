@@ -1,11 +1,21 @@
 {
   "manifest_version": 3,
-  "name": "Integrated Note Taker",
-  "version": "1.0",
+  "name": "NearNote",
+  "version": "1.4.0",
   "description": "Take notes that stay linked to the page you took them on.",
   "permissions": ["tabs", "storage"],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "NearNote.png",
+      "48": "NearNote.png",
+      "128": "NearNote.png"
+    }
+  },
+  "icons": {
+    "16": "NearNote.png",
+    "48": "NearNote.png",
+    "128": "NearNote.png"
   },
   "host_permissions": ["<all_urls>"]
 }

@@ -103,46 +103,52 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Load saved notes, sorted by recency (newest first)
+  // Load saved notes, sorted by recency (newest first) and filtered by the current URL.
   function loadNotes() {
     chrome.storage.local.get(["notes"], (result) => {
       let notes = result.notes || [];
-      savedNotesDiv.innerHTML = "";
-      savedNotesDiv.style.display = "block";
+      // Get the current tab's URL to filter notes.
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const currentUrl = tabs[0].url;
+        // Only include notes with the same URL.
+        notes = notes.filter((note) => note.url === currentUrl);
+        savedNotesDiv.innerHTML = "";
+        savedNotesDiv.style.display = "block";
 
-      if (notes.length === 0) {
-        savedNotesDiv.innerHTML = "<p>No notes yet.</p>";
-        return;
-      }
+        if (notes.length === 0) {
+          savedNotesDiv.innerHTML = "<p>No notes yet.</p>";
+          return;
+        }
 
-      // Sort notes in descending order by ID (timestamp)
-      notes.sort((a, b) => b.id - a.id);
+        // Sort notes in descending order by ID (timestamp)
+        notes.sort((a, b) => b.id - a.id);
 
-      notes.forEach((note) => {
-        const noteDiv = document.createElement("div");
-        noteDiv.className = `note-card ${note.color}`;
-        noteDiv.innerHTML = `
+        notes.forEach((note) => {
+          const noteDiv = document.createElement("div");
+          noteDiv.className = `note-card ${note.color}`;
+          noteDiv.innerHTML = `
                 <strong>${note.title}</strong><br>
                 <small>${note.url}</small><br>
                 <p>${note.content}</p>
               `;
-        // Set up click event to open the note for editing/viewing.
-        noteDiv.addEventListener("click", () => {
-          currentNoteId = note.id;
-          noteForm.style.display = "block";
-          savedNotesDiv.style.display = "none";
-          titleInput.value = note.title;
-          urlInput.value = note.url;
-          contentInput.value = note.content;
-          selectedColor = note.color;
-          colorOptions.forEach((o) => o.classList.remove("selected"));
-          document
-            .querySelector(`.color-option[data-color="${note.color}"]`)
-            .classList.add("selected");
-          // Display the delete button when editing an existing note.
-          deleteBtn.style.display = "inline-block";
+          // Set up click event to open the note for editing/viewing.
+          noteDiv.addEventListener("click", () => {
+            currentNoteId = note.id;
+            noteForm.style.display = "block";
+            savedNotesDiv.style.display = "none";
+            titleInput.value = note.title;
+            urlInput.value = note.url;
+            contentInput.value = note.content;
+            selectedColor = note.color;
+            colorOptions.forEach((o) => o.classList.remove("selected"));
+            document
+              .querySelector(`.color-option[data-color="${note.color}"]`)
+              .classList.add("selected");
+            // Display the delete button when editing an existing note.
+            deleteBtn.style.display = "inline-block";
+          });
+          savedNotesDiv.appendChild(noteDiv);
         });
-        savedNotesDiv.appendChild(noteDiv);
       });
     });
   }

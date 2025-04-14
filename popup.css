@@ -1,19 +1,22 @@
 body {
   font-family: "Roboto", sans-serif;
   padding: 12px;
-  width: 320px; /* Slightly wider for more room */
+  width: 320px;
   background-color: #fcfcf7;
   background-image: repeating-linear-gradient(
       to bottom,
       #fcfcf7 0px,
       #fcfcf7 23px,
-      #d9d9d9 24px
+      #999999 24px
     ),
-    linear-gradient(to right, #b0c4de 1px, transparent 1px);
+    linear-gradient(to right, #5c91c7 1px, transparent 1px);
   background-size: 100% 24px;
   background-position: left top;
-  border-left: 4px solid #b0c4de; /* Vertical margin line */
+  border-left: 4px solid #b0c4de;
   color: #333;
+  font-size: 1.05em;
+  /* Added to help center the primary buttons */
+  text-align: center;
 }
 
 h2 {
@@ -22,29 +25,78 @@ h2 {
   text-align: center;
 }
 
-/* BUTTON STYLES */
+/* BUTTON STYLES for all buttons not overridden later */
 button {
-  background-color: #5bc0de; /* Soft blue */
+  background: linear-gradient(to bottom right, #5bc0de, #48a9c5);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   padding: 10px 16px;
   cursor: pointer;
   margin: 6px 0;
   font-size: 1em;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-weight: 500;
+  transition: background 0.3s ease, transform 0.1s ease, box-shadow 0.2s ease;
   display: block;
   width: 100%;
   box-sizing: border-box;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
-  background-color: #31b0d5;
+  background: linear-gradient(to bottom right, #4bb3d1, #3b9db7);
   transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 button:active {
   transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Primary Buttons: New Note and My Notes */
+/* Their text is hidden, they become circular, get a red-to-orange gradient,
+     and are set to inline-block so they sit side by side and, because body 
+     has text-align: center, are centered in the viewport */
+#new-note-btn,
+#view-notes-btn {
+  text-indent: -9999px; /* Hide text */
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 6px;
+  background: linear-gradient(to bottom right, #ff4500, #ffa500);
+}
+
+/* New Note Button Icon (Pencil) */
+#new-note-btn::before {
+  content: "\270F"; /* Unicode pencil (✏️) */
+  text-indent: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5em;
+}
+
+/* My Notes Button Icon (Hamburger) */
+#view-notes-btn::before {
+  content: "\2630"; /* Unicode hamburger menu (☰) */
+  text-indent: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5em;
+}
+
+/* Other Buttons: Save, Cancel, Delete now use a gradient from #4500FF to #C4000FF */
+#save-note-btn,
+#cancel-note-btn,
+#delete-note-btn {
+  background: linear-gradient(to bottom right, #4500ff, #c400ff);
 }
 
 /* INPUT & TEXTAREA STYLES */
@@ -58,6 +110,16 @@ textarea {
   margin-bottom: 10px;
   background-color: white;
   font-size: 1em;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  /* Ensure these remain left aligned even though body is centered */
+  text-align: left;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #5bc0de;
+  box-shadow: 0 2px 4px rgba(91, 192, 222, 0.3);
 }
 
 textarea {
@@ -69,6 +131,8 @@ textarea {
 #note-form,
 #saved-notes {
   margin-top: 12px;
+  /* Ensure form contents remain left aligned */
+  text-align: left;
 }
 
 /* NOTE CARD STYLES */
@@ -76,12 +140,14 @@ textarea {
   position: relative;
   border-radius: 8px;
   padding: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  background-color: #fff8b3; /* Default yellow note */
+  background-color: #fff8b3;
   cursor: pointer;
   user-select: none;
+  line-height: 1.5;
+  text-align: left;
 }
 
 .note-card:hover {
@@ -89,18 +155,32 @@ textarea {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Sticky note folded corner effect */
+.note-card .note-title {
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.note-card .note-url {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Sticky note folded triangle corner */
 .note-card::after {
   content: "";
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 20px;
-  height: 20px;
-  background-color: inherit;
-  transform: rotate(45deg);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 20px 20px;
+  border-color: transparent transparent transparent rgba(0, 0, 0, 0.1);
+  transform: rotate(0deg);
   z-index: 1;
+  box-shadow: -3px -3px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* NOTE COLOR THEMES */
@@ -165,11 +245,19 @@ textarea {
   margin-top: 8px;
 }
 
-/*Style for the note details container */
+/* Style for the note details container */
 #note-details {
   margin-top: 20px;
   padding: 10px;
   background-color: #f5f5f5;
   border: 1px solid #ccc;
   border-radius: 6px;
+  text-align: left;
+}
+h2 {
+  margin: 0 0 12px;
+  font-size: 1.8em;
+  text-align: center;
+  /* Use Dancing Script for the title */
+  font-family: "Dancing Script", cursive;
 }
