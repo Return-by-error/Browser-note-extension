@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const noteForm = document.getElementById("note-form");
   const saveBtn = document.getElementById("save-note-btn");
   const cancelBtn = document.getElementById("cancel-note-btn");
-  const deleteBtn = document.getElementById("delete-note-btn"); // Delete button
   const titleInput = document.getElementById("note-title");
   const urlInput = document.getElementById("note-url");
   const contentInput = document.getElementById("note-content");
@@ -12,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedNotesDiv = document.getElementById("saved-notes");
   const colorOptions = document.querySelectorAll(".color-option");
 
-  let currentNoteId = null; // Tracks the note being edited; null means new note
+  let currentNoteId = null;
   let selectedColor = "note-yellow";
 
   // Handle color selection
@@ -25,16 +24,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   newNoteBtn.addEventListener("click", async () => {
-    resetForm(); // Clear the form first.
+    resetForm();
     noteForm.style.display = "block";
     savedNotesDiv.style.display = "none";
-    currentNoteId = null; // Reset for new note
-    deleteBtn.style.display = "none"; // Hide delete button for new note
+    currentNoteId = null;
+    deleteBtn.style.display = "none";
     const [tab] = await chrome.tabs.query({
       active: true,
       currentWindow: true,
     });
-    urlInput.value = tab.url; // Auto-fill the URL field from the current tab
+    urlInput.value = tab.url; // Auto-fill the URL
   });
 
   viewNotesBtn.addEventListener("click", () => {
@@ -55,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!title || !url || !content) return;
 
-    // Create note object. If editing, reuse the note ID; otherwise, generate a new one.
+    // Create note object. If editing, reuse the note ID
     const newNote = {
       id: currentNoteId || Date.now(),
       title,
@@ -88,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Delete note functionality
+  // Delete note
   deleteBtn.addEventListener("click", () => {
     if (!currentNoteId) return;
     chrome.storage.local.get(["notes"], (result) => {
@@ -103,14 +102,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Load saved notes, sorted by recency (newest first) and filtered by the current URL.
+  // Load saved notes, sorted by recency and filtered by the current URL.
   function loadNotes() {
     chrome.storage.local.get(["notes"], (result) => {
       let notes = result.notes || [];
-      // Get the current tab's URL to filter notes.
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const currentUrl = tabs[0].url;
-        // Only include notes with the same URL.
         notes = notes.filter((note) => note.url === currentUrl);
         savedNotesDiv.innerHTML = "";
         savedNotesDiv.style.display = "block";
@@ -120,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        // Sort notes in descending order by ID (timestamp)
+        // Sort notes in descending order by ID
         notes.sort((a, b) => b.id - a.id);
 
         notes.forEach((note) => {
@@ -131,7 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 <small>${note.url}</small><br>
                 <p>${note.content}</p>
               `;
-          // Set up click event to open the note for editing/viewing.
           noteDiv.addEventListener("click", () => {
             currentNoteId = note.id;
             noteForm.style.display = "block";
@@ -144,7 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
             document
               .querySelector(`.color-option[data-color="${note.color}"]`)
               .classList.add("selected");
-            // Display the delete button when editing an existing note.
             deleteBtn.style.display = "inline-block";
           });
           savedNotesDiv.appendChild(noteDiv);

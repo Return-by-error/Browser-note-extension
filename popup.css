@@ -15,7 +15,6 @@ body {
   border-left: 4px solid #b0c4de;
   color: #333;
   font-size: 1.05em;
-  /* Added to help center the primary buttons */
   text-align: center;
 }
 
@@ -25,7 +24,6 @@ h2 {
   text-align: center;
 }
 
-/* BUTTON STYLES for all buttons not overridden later */
 button {
   background: linear-gradient(to bottom right, #5bc0de, #48a9c5);
   color: white;
@@ -54,13 +52,9 @@ button:active {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Primary Buttons: New Note and My Notes */
-/* Their text is hidden, they become circular, get a red-to-orange gradient,
-     and are set to inline-block so they sit side by side and, because body 
-     has text-align: center, are centered in the viewport */
 #new-note-btn,
 #view-notes-btn {
-  text-indent: -9999px; /* Hide text */
+  text-indent: -9999px;
   position: relative;
   display: inline-block;
   width: 50px;
@@ -70,9 +64,9 @@ button:active {
   background: linear-gradient(to bottom right, #ff4500, #ffa500);
 }
 
-/* New Note Button Icon (Pencil) */
+/* New Note Button Icon*/
 #new-note-btn::before {
-  content: "\270F"; /* Unicode pencil (✏️) */
+  content: "\270F";
   text-indent: 0;
   position: absolute;
   top: 50%;
@@ -81,9 +75,9 @@ button:active {
   font-size: 1.5em;
 }
 
-/* My Notes Button Icon (Hamburger) */
+/* My Notes Button Icon*/
 #view-notes-btn::before {
-  content: "\2630"; /* Unicode hamburger menu (☰) */
+  content: "\2630";
   text-indent: 0;
   position: absolute;
   top: 50%;
@@ -92,7 +86,7 @@ button:active {
   font-size: 1.5em;
 }
 
-/* Other Buttons: Save, Cancel, Delete now use a gradient from #4500FF to #C4000FF */
+/* Other Buttons*/
 #save-note-btn,
 #cancel-note-btn,
 #delete-note-btn {
@@ -111,7 +105,6 @@ textarea {
   background-color: white;
   font-size: 1em;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  /* Ensure these remain left aligned even though body is centered */
   text-align: left;
 }
 
@@ -131,7 +124,6 @@ textarea {
 #note-form,
 #saved-notes {
   margin-top: 12px;
-  /* Ensure form contents remain left aligned */
   text-align: left;
 }
 
